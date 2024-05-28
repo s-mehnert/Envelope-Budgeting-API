@@ -2,13 +2,12 @@ const express = require("express");
 const app = express();
 
 const envelopes = {
-    "groceries" : {"budget" : 1000},
-    "rent & utilities" : {"budget" : 2000},
-    "clothing" : {"budget" : 200}
+    // "groceries" : {"budget" : 1000},
+    // "rent & utilities" : {"budget" : 2000},
+    // "clothing" : {"budget" : 200}
 };
 
-const total = 5000;
-let spent = 0;
+let total = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,37 +16,62 @@ app.get("/", (req, res, next) => {
     res.send("<h1>Hello, World!</h1>");
 });
 
+app.get("/envelopes/:total", (req, res, next) => {
+    res.send(`Total budget remaining: ${total}`);
+});
+
 app.get("/envelopes", (req, res, next) => {
-    console.log(envelopes);
     res.json(envelopes);
 });
 
 app.get("/envelopes/:name", (req, res, next) => {
-    console.log(req.params);
-    console.log(req.params.name);
-    console.log(envelopes[req.params.name])
     res.send(envelopes[req.params.name]);
 });
 
 app.post("/envelopes", (req, res, next) => {
     const name = req.body.name;
-    console.log(name);
     const budget = req.body.budget;
-    console.log(budget);
-    const envelope = {"budget" : budget, "spent" : 0};
-    envelopes[name] = envelope;
-    res.status(201).send(envelopes[name]);
+    if (total >= budget) {
+        total -= budget;
+        const envelope = {"budget" : budget};
+        envelopes[name] = envelope;
+        res.status(201).send(`New envelope created. Total budget remaining: ${total}`);
+    } else {
+        res.status(403).send(`Operation declined. Set budget (${budget}) exceeds total remaining budget (${total}).`);
+    }
+});
+
+app.post("/envelopes/transfer/:from/:to", (req, res, next) => {
+    const from = req.params.from;
+    const to = req.params.to;
+    const amount = req.body.amount;
+    if (envelopes[from].budget >= amount) {
+        envelopes[from].budget -= amount;
+        envelopes[to].budget += amount;
+        res.status(201).send(`New balance: ${envelopes[from].budget}, ${envelopes[to].budget}`);
+    } else {
+        res.status(403).send(`Operation declined. Not enough money left in ${envelopes[from]}.`);
+    }  
 });
 
 app.put("/envelopes/:name", (req, res, next) => {
-    console.log(req.params);
     const envelope = req.params.name;
     const spending = req.query.spent;
     if (envelopes[envelope].budget - spending >= 0) {
         envelopes[envelope].budget -= spending;
-        res.send(envelopes[envelope]);
+        res.send(`Spending logged. Remaining budget in this envelope: ${envelopes[envelope].budget}`);
     } else {
         res.status(403).send("Operation declined. Spending exceeds remaining budget.");
+    }
+});
+
+app.delete("/envelopes/:name", (req, res, next) => {
+    const toBeDeleted = req.params.name;
+    if (envelopes[toBeDeleted]) {
+        const remainingBudget = envelopes[toBeDeleted].budget;
+        delete envelopes[toBeDeleted];
+        total += remainingBudget;
+        res.send(`Envelope "${toBeDeleted}" deleted. ${remainingBudget} restored. New total budget: ${total}`)
     }
 });
 
