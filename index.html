@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
     <title>Envelope Budgeting</title>
 </head>
 <body>
@@ -14,28 +13,27 @@
     <div class="container widget">
         <div class="post">
             <label for="new-env">Create new envelope</label>
-            <button id="new-env">NEW</button>
+            <button class="test-post" id="new-env">NEW</button>
         </div>
         <div class="get">
-            <label for="new-env">Show all envelopes</label>
-            <button id="new-env">SHOW ALL</button>
+            <label for="get-all">Show all envelopes</label>
+            <button id="get-all">SHOW ALL</button>
         </div>
         <div class="put">
-            <label for="new-env">Update envelope</label>
-            <button id="new-env">LOG SPENDING</button>
+            <label for="update-env">Update envelope</label>
+            <button id="update-env">LOG SPENDING</button>
         </div>
         <div class="delete">
-            <label for="del-env">Delete envelope</label>
-            <button id="del-env">DELETE</button>
+            <label for="delete-env">Delete envelope</label>
+            <button id="delete-env">DELETE</button>
         </div>
     </div>
     <div class="container">
-        <div class="envelopes">
-            
-        </div>
+        <div class="envelopes"></div>
         <div class="response">
-            <textarea name="server-response" id="res"></textarea>
+            <p id="response-display"></p>
         </div>
     </div>
 </body>
+<script src="script.js"></script>
 </html>
