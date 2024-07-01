@@ -13,10 +13,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res, next) => {
-    res.send("<h1>Hello, World!</h1>");
-});
-
-app.get("/envelopes/:total", (req, res, next) => {
     res.send(`Total budget remaining: ${total}`);
 });
 
