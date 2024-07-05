@@ -1,10 +1,22 @@
 const express = require("express");
 const app = express();
 
+// needed for Travis + ChatGPT version
+
+// const cors = require("cors");
+
+// const corsOptions = {
+//     origin: "*",
+//     methods: "*",
+//     allowedHeaders:"*"
+// }
+
+// app.use(cors(corsOptions));
+
 const envelopes = {
-    // "groceries" : {"budget" : 1000},
-    // "rent & utilities" : {"budget" : 2000},
-    // "clothing" : {"budget" : 200}
+    "groceries" : {"budget" : 1000},
+    "rent & utilities" : {"budget" : 2000},
+    "clothing" : {"budget" : 200}
 };
 
 let total = 5000;
@@ -16,9 +28,9 @@ app.get("/", (req, res, next) => {
     res.send("<h1>Hello, World!</h1>");
 });
 
-app.get("/envelopes/:total", (req, res, next) => {
-    res.send(`Total budget remaining: ${total}`);
-});
+// app.get("/envelopes/:total", (req, res, next) => {
+    // res.send(`Total budget remaining: ${total}`);
+// });
 
 app.get("/envelopes", (req, res, next) => {
     res.json(envelopes);

@@ -1,3 +1,5 @@
+console.log("Loading JS")
+
 const getAllButton = document.getElementById("get-all");
 const postButton = document.getElementById("new-env");
 const putButton = document.getElementById("update-env");
@@ -15,7 +17,23 @@ const serverResponseField = document.getElementById("response-display");
 //     console.log(event.timeStamp)
 // };
 
-getAllButton.addEventListener("click", () => serverResponseField.innerHTML = "Displays all envelopes.");
+getAllButton.addEventListener("click", () => {
+    fetch("http://localhost:3000/envelopes")
+        .then(response => response.json())
+        .then(data => 
+            {
+                for (const [name, envelope] of Object.entries(data)) {
+                    const envelopeDiv = document.createElement('div');
+                    envelopeDiv.classList.add('envelope');
+                    envelopeDiv.innerHTML = `
+                        <h3>${name}</h3>
+                        <p>Budget: $${envelope.budget}</p>
+                    `;
+                    serverResponseField.appendChild(envelopeDiv);
+                }
+            // serverResponseField.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        });
+});
 postButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name and budget for new envelope.\nOnce created, envelope is displayed here.");
 putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");
 deleteButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope. Once completed, displays message about deleted envelope.");
