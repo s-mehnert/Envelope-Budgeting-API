@@ -1,17 +1,15 @@
 const express = require("express");
 const app = express();
 
-// needed for Travis + ChatGPT version
+const cors = require("cors");
 
-// const cors = require("cors");
+const corsOptions = {
+    origin: "*"
+    // methods: "*",
+    // allowedHeaders:"*"
+}
 
-// const corsOptions = {
-//     origin: "*",
-//     methods: "*",
-//     allowedHeaders:"*"
-// }
-
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 const envelopes = {
     "groceries" : {"budget" : 1000},

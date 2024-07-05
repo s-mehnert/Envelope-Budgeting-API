@@ -17,23 +17,47 @@ const serverResponseField = document.getElementById("response-display");
 //     console.log(event.timeStamp)
 // };
 
+// pure JS version worked on with Travis and chatGPT
+
+// getAllButton.addEventListener("click", () => {
+//     fetch("http://localhost:3000/envelopes")
+//         .then(response => response.json())
+//         .then(data => 
+//             {
+//                 for (const [name, envelope] of Object.entries(data)) {
+//                     const envelopeDiv = document.createElement('div');
+//                     envelopeDiv.classList.add('envelope');
+//                     envelopeDiv.innerHTML = `
+//                         <h3>${name}</h3>
+//                         <p>Budget: $${envelope.budget}</p>
+//                     `;
+//                     serverResponseField.appendChild(envelopeDiv);
+//                 }
+//             // serverResponseField.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+//         });
+// });
+
 getAllButton.addEventListener("click", () => {
     fetch("http://localhost:3000/envelopes")
-        .then(response => response.json())
-        .then(data => 
-            {
-                for (const [name, envelope] of Object.entries(data)) {
-                    const envelopeDiv = document.createElement('div');
-                    envelopeDiv.classList.add('envelope');
-                    envelopeDiv.innerHTML = `
-                        <h3>${name}</h3>
-                        <p>Budget: $${envelope.budget}</p>
-                    `;
-                    serverResponseField.appendChild(envelopeDiv);
-                }
-            // serverResponseField.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(jsonResponse => {
+            serverResponseField.innerHTML = `<pre>${JSON.stringify(jsonResponse, null, 2)}</pre>`;
+            // for (const [name, envelope] of Object.entries(jsonResponse)) {
+            //     const envelopeDiv = document.createElement('div');
+            //     envelopeDiv.classList.add('envelope');
+            //     envelopeDiv.innerHTML = `
+            //         <h3>${name}</h3>
+            //         <p>Budget: $${envelope.budget}</p>
+            //     `;
+            //     serverResponseField.appendChild(envelopeDiv);
         });
 });
+
 postButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name and budget for new envelope.\nOnce created, envelope is displayed here.");
 putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");
 deleteButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope. Once completed, displays message about deleted envelope.");
