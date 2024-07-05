@@ -7,17 +7,18 @@
     <title>Envelope Budgeting</title>
 </head>
 <body>
-    <h1>Envelope Budgeting Widget</h1>
-    <p>[Add description]</p>
-    
+    <header>
+        <h1>Envelope Budgeting Widget</h1>
+        <p>[Add description]</p>
+    </header>
     <div class="container widget">
-        <div class="post">
-            <label for="new-env">Create new envelope</label>
-            <button class="test-post" id="new-env">NEW</button>
-        </div>
         <div class="get">
             <label for="get-all">Show all envelopes</label>
             <button id="get-all">SHOW ALL</button>
+        </div>
+        <div class="post">
+            <label for="new-env">Create new envelope</label>
+            <button class="test-post" id="new-env">NEW</button>
         </div>
         <div class="put">
             <label for="update-env">Update envelope</label>
@@ -28,12 +29,11 @@
             <button id="delete-env">DELETE</button>
         </div>
     </div>
-    <div class="container">
-        <div class="envelopes"></div>
-        <div class="response">
-            <p id="response-display"></p>
-        </div>
+    <div class="container envelopes"></div>
+    <div class="response">
+        <p id="response-display">...server response will be displayed here ...</p>
     </div>
+    <footer></footer>
 </body>
 <script src="script.js"></script>
 </html>

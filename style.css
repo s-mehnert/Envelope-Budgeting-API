@@ -2,6 +2,35 @@
     border: 1px solid black;
 }
 
+body {
+    display: grid;
+    width: 1000px;
+    height: 600px;
+    grid-template-areas: "header header" "widget envelopes" "response envelopes" "footer footer";
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 3fr 3fr 0.5fr;
+}
+
+header {
+    grid-area: header;
+}
+
+.widget {
+    grid-area: widget;
+}
+
+.envelopes {
+    grid-area: envelopes;
+}
+
+.response {
+    grid-area: response;
+}
+
+footer {
+    grid-area: footer;
+}
+
 button {
     background-color: yellow;
     margin-left: 15px;
@@ -14,19 +43,23 @@ label {
     padding: 5px;
 }
 
-textarea {
+#response-display {
     width: 100%;
     height: 100%;
+    text-align: center;
 }
 
 .container {
-    height: 200px;
+    display: grid;
+    justify-items: space-around;
+    /* height: 200px;
     width: 400px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
 }
 
 .container div {
-    width: 100%;
-    padding: 10px;
+    justify-items: center;
+    /* width: 100%;
+    padding: 10px; */
 }
