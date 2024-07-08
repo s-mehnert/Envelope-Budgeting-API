@@ -17,8 +17,12 @@
             <button id="get-all">SHOW ALL</button>
         </div>
         <div class="post">
-            <label for="new-env">Create new envelope</label>
-            <button class="test-post" id="new-env">NEW</button>
+            <form id="post" action="http://localhost:3000/envelopes" method="POST">
+                <label for="create">Create new envelope</label>
+                <input type="text" name="new-env" id="new-env" placeholder="Name" required>
+                <input type="number" name="new-budget" id="new-budget" placeholder="Budget" min="10" step="10" required>
+                <button type="submit" class="test-post" id="create-env">CREATE</button>
+            </form>
         </div>
         <div class="put">
             <label for="update-env">Update envelope</label>

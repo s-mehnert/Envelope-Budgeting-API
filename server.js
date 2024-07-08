@@ -39,8 +39,8 @@ app.get("/envelopes/:name", (req, res, next) => {
 });
 
 app.post("/envelopes", (req, res, next) => {
-    const name = req.body.name;
-    const budget = req.body.budget;
+    const name = req.body.new-env;
+    const budget = req.body.new-budget;
     if (total >= budget) {
         total -= budget;
         const envelope = {"budget" : budget};
