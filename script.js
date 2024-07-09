@@ -1,5 +1,4 @@
-console.log("Loading JS")
-
+// grab all relevant HTML elements
 const getAllButton = document.getElementById("get-all");
 
 const postName = document.getElementById("new-env");
@@ -14,52 +13,24 @@ const deleteName = document.getElementById("del-env");
 const deleteButton = document.getElementById("delete-env");
 
 const serverResponseField = document.getElementById("response-display");
+const envelopeDisplay = document.getElementById("envelope-display");
 
-// let serverResponse = "Test...test...test"
-
-// const displayServerResponse = () => {
-//     serverResponseField.innerHTML = serverResponse;
-// };
-
-// const eventHandler = (event) => {
-//     serverResponseField.innerHTML = event.timeStamp;
-//     console.log(event.timeStamp)
-// };
-
-// pure JS version worked on with Travis and chatGPT
-
-// getAllButton.addEventListener("click", () => {
-//     fetch("http://localhost:3000/envelopes")
-//         .then(response => response.json())
-//         .then(data => 
-//             {
-//                 for (const [name, envelope] of Object.entries(data)) {
-//                     const envelopeDiv = document.createElement('div');
-//                     envelopeDiv.classList.add('envelope');
-//                     envelopeDiv.innerHTML = `
-//                         <h3>${name}</h3>
-//                         <p>Budget: $${envelope.budget}</p>
-//                     `;
-//                     serverResponseField.appendChild(envelopeDiv);
-//                 }
-//             // serverResponseField.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-//         });
-// });
-
+// add event listeners to connected HTTP routes
 getAllButton.addEventListener("click", async () => {
     try {
         const response = await fetch("http://localhost:3000/envelopes");
         if (response.ok) {
             const jsonResponse = await response.json();
             serverResponseField.innerHTML = `<pre>${JSON.stringify(jsonResponse, null, 2)}</pre>`;
-            // for (const [name, envelope] of Object.entries(jsonResponse)) {
-            //     const envelopeDiv = document.createElement('div');
-            //     envelopeDiv.classList.add('envelope');
-            //     envelopeDiv.innerHTML = `
-            //         <h3>${name}</h3>
-            //         <p>Budget: $${envelope.budget}</p>
-            //     `;
-            //     serverResponseField.appendChild(envelopeDiv);
+            for (const [name, envelope] of Object.entries(jsonResponse)) {
+                const envelopeDiv = document.createElement('div');
+                envelopeDiv.classList.add('envelope');
+                envelopeDiv.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>Budget: $${envelope.budget}</p>
+                `; // add envelope image as well as styling in CSS
+                envelopeDisplay.appendChild(envelopeDiv);
+            }
         } else {
         throw new Error(`HTTP Error: ${response.status}`);
         }
@@ -84,10 +55,7 @@ postButton.addEventListener("click", async () => {
                 },
                 body: JSON.stringify({newEnv: envName, newBudget: envBudget}) 
             });
-            if (response.ok) {
-                const jsonResponse = await response.text();
-                serverResponseField.innerHTML = jsonResponse;
-            } else if (response.status === 403) {
+            if (response.ok || response.status === 403) {
                 const jsonResponse = await response.text();
                 serverResponseField.innerHTML = jsonResponse;
             } else {
@@ -115,10 +83,7 @@ putButton.addEventListener("click", async () => {
                     // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
                 }
             });
-            if (response.ok) {
-                const jsonResponse = await response.text();
-                serverResponseField.innerHTML = jsonResponse;
-            } else if (response.status === 403) {
+            if (response.ok || response.status === 403) {
                 const jsonResponse = await response.text();
                 serverResponseField.innerHTML = jsonResponse;
             } else {
@@ -156,5 +121,3 @@ deleteButton.addEventListener("click", async () => {
         }
     }    
 });
-
-//putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");

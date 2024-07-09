@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 
 const corsOptions = {
-    origin: "*",
+    origin: "*", // set to real accessing URL once deployed
     method: "GET,PUT,POST,DELETE",
     allowedHeaders:"*"
 }
