@@ -11,7 +11,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const envelopes = {
+const envelopes = { // rename budget to "remaining budget" and add "spent"
     // "groceries" : {"budget" : 1000},
     // "rent & utilities" : {"budget" : 2000},
     "clothing" : {"budget" : 200}

@@ -1,12 +1,18 @@
 console.log("Loading JS")
 
 const getAllButton = document.getElementById("get-all");
+
 const postName = document.getElementById("new-env");
 const postBudget = document.getElementById("new-budget");
 const postButton = document.getElementById("create-env");
+
+const putName = document.getElementById("put-env");
+const putAmount = document.getElementById("spent");
 const putButton = document.getElementById("update-env");
-const deleteButton = document.getElementById("delete-env")
+
 const deleteName = document.getElementById("del-env");
+const deleteButton = document.getElementById("delete-env");
+
 const serverResponseField = document.getElementById("response-display");
 
 // let serverResponse = "Test...test...test"
@@ -93,6 +99,37 @@ postButton.addEventListener("click", async () => {
     }
 });
 
+putButton.addEventListener("click", async () => {
+    const envName = putName.value;
+    const envSpent = Number(putAmount.value);
+    if (envName === "" || envSpent === 0) {
+        serverResponseField.innerHTML = "Please enter a name and amount spent before clicking the LOG SPENDING button.";
+    } else {
+        const envURL = "http://localhost:3000/envelopes/" + envName + "?spent=" + envSpent;
+        try {
+            const response = await fetch(envURL, {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Include any additional headers if needed
+                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                }
+            });
+            if (response.ok) {
+                const jsonResponse = await response.text();
+                serverResponseField.innerHTML = jsonResponse;
+            } else if (response.status === 403) {
+                const jsonResponse = await response.text();
+                serverResponseField.innerHTML = jsonResponse;
+            } else {
+                throw new Error("Request failed!");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+});
+
 deleteButton.addEventListener("click", async () => {
     const envName = deleteName.value;
     if (envName === "") {
@@ -120,5 +157,4 @@ deleteButton.addEventListener("click", async () => {
     }    
 });
 
-putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");
-// deleteButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope. Once completed, displays message about deleted envelope.");
+//putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");

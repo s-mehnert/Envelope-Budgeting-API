@@ -21,12 +21,14 @@
                 <label for="create-env">Create new envelope</label>
                 <input type="text" name="new-env" id="new-env" placeholder="Name" required>
                 <input type="number" name="new-budget" id="new-budget" placeholder="Budget" min="10" step="10" required>
-                <button type="submit" class="test-post" id="create-env">CREATE</button>
+                <button type="submit" id="create-env">CREATE</button>
             <!-- </form> -->
         </div>
         <div class="put">
             <label for="update-env">Update envelope</label>
-            <button id="update-env">LOG SPENDING</button>
+            <input type="text" name="put-env" id="put-env" placeholder="Name" required>
+            <input type="number" name="spent" id="spent" placeholder="Amount spent" required>
+            <button type ="submit" id="update-env">LOG SPENDING</button>
         </div>
         <div class="delete">
             <label for="delete-env">Delete envelope</label>
