@@ -4,16 +4,16 @@ const app = express();
 const cors = require("cors");
 
 const corsOptions = {
-    origin: "*"
-    // methods: "*",
-    // allowedHeaders:"*"
+    origin: "*",
+    method: "GET,PUT,POST,DELETE",
+    allowedHeaders:"*"
 }
 
 app.use(cors(corsOptions));
 
 const envelopes = {
-    "groceries" : {"budget" : 1000},
-    "rent & utilities" : {"budget" : 2000},
+    // "groceries" : {"budget" : 1000},
+    // "rent & utilities" : {"budget" : 2000},
     "clothing" : {"budget" : 200}
 };
 
@@ -38,9 +38,9 @@ app.get("/envelopes/:name", (req, res, next) => {
     res.send(envelopes[req.params.name]);
 });
 
-app.post("/envelopes", (req, res, next) => {
-    const name = req.body.new-env;
-    const budget = req.body.new-budget;
+app.post("/envelopes", (req, res, next) => { // add logic to prevent envelopes with same name to be created
+    const name = req.body.newEnv;
+    const budget = req.body.newBudget;
     if (total >= budget) {
         total -= budget;
         const envelope = {"budget" : budget};
