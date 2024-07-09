@@ -1,6 +1,8 @@
 console.log("Loading JS")
 
 const getAllButton = document.getElementById("get-all");
+const postName = document.getElementById("new-env");
+const postBudget = document.getElementById("new-budget");
 const postButton = document.getElementById("create-env");
 const putButton = document.getElementById("update-env");
 const deleteButton = document.getElementById("delete-env")
@@ -59,71 +61,34 @@ getAllButton.addEventListener("click", async () => {
     }
 });
 
-// ATTEMPT TO GET DATA FROM FORM
-// const postForm = document.querySelector("#post");
-
-// async function sendPostData() {
-//     const formData = new FormData(postForm);
-
-//     try {
-//         const response = await fetch("http://localhost:3000/envelopes/", {
-//             method: "POST",
-//             body: formData,
-//         });
-//         console.log(await response.json());
-//     } catch (e) {
-//         console.error(e);
-//     }
-// }
-
-// postForm.addEventListener("submit", (event) => {
-//     event.preventDefault();
-//     sendPostData();
-// });
-
-// postButton.addEventListener("submit", () => {
-//     const name = document.getElementById("new-env");
-//     const budget = document.getElementById("new-budget");
-//     const postURL = "http://localhost:3000/envelopes"
-//     serverResponseField.innerHTML = `New envelope: ${newName.value}\nNew budget: ${newBudget.value}`;
-// });
-
-// Fetch request for post route without async
-// postButton.addEventListener("click", () => {
-//     fetch("http://localhost:3000/envelopes", {
-//         method: "post",
-//         body: JSON.stringify({"new-env": "test", "new-budget": 50})
-//     })
-//     .then(response => {
-//         if (response.ok) {
-//             return response.json();
-//         }
-//         throw new Error("Request Failed!");
-//     }, networkError => console.log(networkError.message))
-//     .then(jsonResponse => {
-//         serverResponseField.innerHTML = JSON.stringify(jsonResponse);
-//     });
-// });
-
 postButton.addEventListener("click", async () => {
-    try {
-        const response = await fetch("http://localhost:3000/envelopes", {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                // Include any additional headers if needed
-                // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
-            },
-            body: JSON.stringify({newEnv: "test", newBudget: 50}) // adjust code so input from index.html is being fetched
-        });
-        if (response.ok) {
-            const jsonResponse = await response.text();
-            serverResponseField.innerHTML = jsonResponse;
-        } else {
-            throw new Error("Request failed!");
+    const envName = postName.value;
+    const envBudget = Number(postBudget.value);
+    if (envName === "" || envBudget === 0) {
+        serverResponseField.innerHTML = "Please enter a name and budget before clicking the CREATE button.";
+    } else {
+        try {
+            const response = await fetch("http://localhost:3000/envelopes", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Include any additional headers if needed
+                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                },
+                body: JSON.stringify({newEnv: envName, newBudget: envBudget}) 
+            });
+            if (response.ok) {
+                const jsonResponse = await response.text();
+                serverResponseField.innerHTML = jsonResponse;
+            } else if (response.status === 403) {
+                const jsonResponse = await response.text();
+                serverResponseField.innerHTML = jsonResponse;
+            } else {
+                throw new Error("Request failed!");
+            }
+        } catch (err) {
+            console.log(err);
         }
-    } catch (err) {
-        console.log(err);
     }
 });
 

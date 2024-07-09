@@ -45,7 +45,7 @@ app.post("/envelopes", (req, res, next) => { // add logic to prevent envelopes w
         total -= budget;
         const envelope = {"budget" : budget};
         envelopes[name] = envelope;
-        res.status(201).send(`New envelope created. Total budget remaining: ${total}`);
+        res.status(201).send(`New envelope "${name}" ${JSON.stringify(envelopes[name])} created. Total budget remaining: ${total}`);
     } else {
         res.status(403).send(`Operation declined. Set budget (${budget}) exceeds total remaining budget (${total}).`);
     }
