@@ -82,7 +82,7 @@ app.delete("/envelopes/:name", (req, res, next) => {
         delete envelopes[toBeDeleted];
         total += remainingBudget;
         res.send(`Envelope "${toBeDeleted}" deleted. ${remainingBudget} restored. New total budget: ${total}`)
-    }
+    } // add else block to deal with non-valid name entries
 });
 
 app.listen(3000, () => {

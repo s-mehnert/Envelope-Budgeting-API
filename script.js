@@ -6,6 +6,7 @@ const postBudget = document.getElementById("new-budget");
 const postButton = document.getElementById("create-env");
 const putButton = document.getElementById("update-env");
 const deleteButton = document.getElementById("delete-env")
+const deleteName = document.getElementById("del-env");
 const serverResponseField = document.getElementById("response-display");
 
 // let serverResponse = "Test...test...test"
@@ -92,7 +93,32 @@ postButton.addEventListener("click", async () => {
     }
 });
 
+deleteButton.addEventListener("click", async () => {
+    const envName = deleteName.value;
+    if (envName === "") {
+        serverResponseField.innerHTML = "Please enter a name before clicking the DELETE button.";
+    } else {
+        const envURL = "http://localhost:3000/envelopes/" + envName;
+        try {
+            const response = await fetch(envURL, {
+                method: "delete",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Include any additional headers if needed
+                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                }
+            }); 
+            if (response.ok) {
+                const jsonResponse = await response.text();
+                serverResponseField.innerHTML = jsonResponse;
+            } else {
+                throw new Error("Request failed!");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }    
+});
 
-// postButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name and budget for new envelope.\nOnce created, envelope is displayed here.");
 putButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope and amount spent.\n Once completed, modified envelope is displayed here.");
-deleteButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope. Once completed, displays message about deleted envelope.");
+// deleteButton.addEventListener("click", () => serverResponseField.innerHTML = "Opens popup to enter name of envelope. Once completed, displays message about deleted envelope.");
