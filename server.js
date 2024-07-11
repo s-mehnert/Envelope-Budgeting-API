@@ -11,10 +11,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const envelopes = { // rename budget to "remaining budget" and add "spent"
-    // "groceries" : {"budget" : 1000},
-    // "rent & utilities" : {"budget" : 2000},
-    "clothing" : {"budget" : 200}
+const envelopes = {
+    // "groceries" : {"budget" : 1000, "spent": 0},
+    // "rent & utilities" : {"budget" : 2000, "spent" : 0},
+    "clothing" : {"budget" : 200, "spent" : 0}
 };
 
 let total = 5000;
@@ -38,12 +38,14 @@ app.get("/envelopes/:name", (req, res, next) => {
     res.send(envelopes[req.params.name]);
 });
 
-app.post("/envelopes", (req, res, next) => { // add logic to prevent envelopes with same name to be created
+app.post("/envelopes", (req, res, next) => {
     const name = req.body.newEnv;
     const budget = req.body.newBudget;
-    if (total >= budget) {
+    if (envelopes.hasOwnProperty(name)) {
+        res.status(403).send(`Operation declined. Envelope (${budget}) already exists. Please, select another name.`);
+    } else if (total >= budget) {
         total -= budget;
-        const envelope = {"budget" : budget};
+        const envelope = {"budget" : budget, "spent" : 0};
         envelopes[name] = envelope;
         res.status(201).send(`New envelope "${name}" ${JSON.stringify(envelopes[name])} created. Total budget remaining: ${total}`);
     } else {
@@ -66,9 +68,10 @@ app.post("/envelopes/transfer/:from/:to", (req, res, next) => {
 
 app.put("/envelopes/:name", (req, res, next) => {
     const envelope = req.params.name;
-    const spending = req.query.spent;
+    const spending = Number(req.query.spent);
     if (envelopes[envelope].budget - spending >= 0) {
         envelopes[envelope].budget -= spending;
+        envelopes[envelope].spent += spending;
         res.send(`Spending logged. Remaining budget in envelope "${envelope}": ${envelopes[envelope].budget}`);
     } else {
         res.status(403).send("Operation declined. Spending exceeds remaining budget.");

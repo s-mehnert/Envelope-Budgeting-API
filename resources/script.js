@@ -22,10 +22,12 @@ const displayEnv = jsonResponse => {
     for (const [name, envelope] of Object.entries(jsonResponse)) {
         const envelopeDiv = document.createElement('div');
         envelopeDiv.classList.add('envelope');
+        envelopeDiv.id = name;
         envelopeDiv.innerHTML = `
             <div></div>
-            <h3>${name}</h3>
-            <p>Budget: $${envelope.budget}</p>
+            <h4>${name}</h4>
+            <p>Remaining Budget: $${envelope.budget}
+            <br>Amount spent: $${envelope.spent}</p>
         `; // add envelope image as well as styling in CSS
         envelopeDisplayField.appendChild(envelopeDiv);
     }

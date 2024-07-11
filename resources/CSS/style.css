@@ -66,6 +66,10 @@ label {
     flex-wrap: wrap; */
 }
 
+.envelopes {
+    text-align: center;
+}
+
 .container div {
     justify-items: center;
     align-items: left;
@@ -74,7 +78,6 @@ label {
 }
 
 #envelope-display {
-    border: 1px solid red;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -83,11 +86,17 @@ label {
 
 .envelope {
     display: grid;
-    border: 1px dotted blue;
     min-width: 30%;
-    max-height: 120px;
-    overflow: hidden;
+    max-height: 150px;
     padding: 10px;
+    align-items: space-around;
+    font-size: smaller;
+    margin-bottom: 10px;
+}
+
+.envelope h4 {
+    line-height: 0.1;
+    text-transform: uppercase;
 }
 
 .envelope div {
