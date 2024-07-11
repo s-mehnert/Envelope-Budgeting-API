@@ -14,19 +14,19 @@
     </header>
     <div class="container widget">
         <div class="get">
-            <label for="get-all">Show all envelopes</label>
+            <label for="get-all">Show All Envelopes</label>
             <button id="get-all">SHOW ALL</button>
         </div>
         <div class="post">
             <!-- <form id="post" action="http://localhost:3000/envelopes" method="POST"> -->
-                <label for="create-env">Create new envelope</label>
+                <label for="create-env">Create New Envelope</label>
                 <input type="text" name="new-env" id="new-env" placeholder="Name" required>
                 <input type="number" name="new-budget" id="new-budget" placeholder="Budget" min="10" step="10" required>
                 <button type="submit" id="create-env">CREATE</button>
             <!-- </form> -->
         </div>
         <div class="put">
-            <label for="update-env">Update envelope</label>
+            <label for="update-env">Update Envelope</label>
             <input type="text" name="put-env" id="put-env" placeholder="Name" required>
             <input type="number" name="spent" id="spent" placeholder="Amount" required>
             <button type ="submit" id="update-env">LOG SPENDING</button>
@@ -39,12 +39,16 @@
             <button type ="submit" id="transfer-budget">TRANSFER</button>
         </div>
         <div class="delete">
-            <label for="delete-env">Delete envelope</label>
+            <label for="delete-env">Delete Envelope</label>
             <input type="text" name="del-env" id="del-env" placeholder="Name" required> <!-- add code in script.js to display a dropdown of all current envelopes-->
             <button id="delete-env">DELETE</button>
         </div>
+        <div class="total">
+            <label for="check-total">Check Total Remaining Budget</label>
+            <button id="check-total">TOTAL</button>
+        </div>
     </div>
-    <div class="container envelopes">
+    <div class="envelopes">
         <h3>Your Budgeting Envelopes</h3>
         <div id="envelope-display"></div>
     </div>

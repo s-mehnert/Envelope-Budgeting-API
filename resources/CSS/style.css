@@ -12,6 +12,10 @@ body {
     grid-template-rows: 1fr 3fr 3fr 0.5fr;
 }
 
+h3 {
+    height: 50px;
+}
+
 header {
     grid-area: header;
     padding: 0 25px;
@@ -27,8 +31,41 @@ header p {
 
 .envelopes {
     grid-area: envelopes;
-    text-align: center;
+    justify-content: space-around;
     border-left: 1px solid black;
+    text-align: center;
+}
+
+.envelopes h3 {
+    padding-left: 35px;
+}
+
+#envelope-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: space-evenly;
+}
+
+.envelope {
+    display: grid;
+    min-width: 25%;
+    max-height: 150px;
+    padding: 10px;
+    font-size: x-small;
+    margin: 10px;
+    justify-items: center;
+}
+
+.envelope h4 {
+    line-height: 0.1;
+    text-transform: uppercase;
+}
+
+.envelope div {
+    background-image: url("../images/envelope.png");
+    background-size: cover;
+    height: 50px;
+    width: 50px;
 }
 
 .response {
@@ -71,7 +108,7 @@ label {
 .container {
     display: grid;
     justify-items: space-around;
-    margin: 20px;
+    margin: 0 20px 5px 20px;
 }
 
 .container div {
@@ -79,31 +116,7 @@ label {
     align-items: left;
 }
 
-#envelope-display {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    padding: 25px;
+.widget div {
+    padding: 10px 0;
 }
 
-.envelope {
-    display: grid;
-    min-width: 30%;
-    max-height: 150px;
-    padding: 10px;
-    align-items: space-around;
-    font-size: smaller;
-    margin-bottom: 10px;
-}
-
-.envelope h4 {
-    line-height: 0.1;
-    text-transform: uppercase;
-}
-
-.envelope div {
-    background-image: url("../images/envelope.png");
-    background-size: cover;
-    height: 50px;
-    width: 50px;
-}

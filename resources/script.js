@@ -20,6 +20,8 @@ const deleteButton = document.getElementById("delete-env");
 const serverResponseField = document.getElementById("response-display");
 const envelopeDisplayField = document.getElementById("envelope-display");
 
+const checkTotalButton = document.getElementById("check-total");
+
 // helper functions for visually displaying envelopes
 
 const displayEnv = jsonResponse => {
@@ -57,6 +59,7 @@ getAllButton.addEventListener("click", async () => {
         const response = await fetch("http://localhost:3000/envelopes");
         if (response.ok) {
             const jsonResponse = await response.json();
+            clearDisplay();
             serverResponseField.innerHTML = `
             <h4>--- listing all envelopes ---</h4>
             <pre>${JSON.stringify(jsonResponse, null, 2)}</pre>
@@ -222,4 +225,22 @@ deleteButton.addEventListener("click", async () => {
             console.log(err);
         }
     }    
+});
+
+checkTotalButton.addEventListener("click", async () => {
+    try {
+        const response = await fetch("http://localhost:3000/total");
+        if (response.ok) {
+            const jsonResponse = await response.text();
+            clearDisplay();
+            serverResponseField.innerHTML = `
+            <h4>--- checking balance ---</h4>
+            <pre>${jsonResponse}</pre>
+            `;
+        } else {
+        throw new Error(`HTTP Error: ${response.status}`);
+        }
+    } catch (err) {
+        console.log(err);
+    }
 });

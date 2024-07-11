@@ -27,9 +27,9 @@ app.get("/", (req, res, next) => {
     res.send("<h1>Hello, World!</h1>");
 });
 
-// app.get("/envelopes/:total", (req, res, next) => {
-    // res.send(`Total budget remaining: ${total}`);
-// });
+app.get("/total", (req, res, next) => {
+    res.send(`Total budget remaining: ${total}`);
+});
 
 app.get("/envelopes", (req, res, next) => {
     res.json(envelopes);
