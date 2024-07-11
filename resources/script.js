@@ -9,6 +9,11 @@ const putName = document.getElementById("put-env");
 const putAmount = document.getElementById("spent");
 const putButton = document.getElementById("update-env");
 
+const transferFrom = document.getElementById("from-env");
+const transferTo = document.getElementById("to-env");
+const transferAmount = document.getElementById("transfer-amount");
+const transferButton = document.getElementById("transfer-budget");
+
 const deleteName = document.getElementById("del-env");
 const deleteButton = document.getElementById("delete-env");
 
@@ -120,6 +125,40 @@ putButton.addEventListener("click", async () => {
     }
 });
 
+transferButton.addEventListener("click", async () => {
+    const fromEnv = transferFrom.value;
+    const toEnv = transferTo.value;
+    const transfer = Number(transferAmount.value);
+    if (fromEnv === "" || toEnv === "" || transfer === 0) {
+        serverResponseField.innerHTML = "Please enter the names of the envelopes you want to transfer between and the amount bo be transferred before clicking the TRANSFER button.";
+    } else {
+        const envURL = "http://localhost:3000/envelopes/transfer/" + fromEnv + "/" + toEnv + "?transfer=" + transfer;
+        try {
+            const response = await fetch(envURL, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Include any additional headers if needed
+                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                }
+            });
+            if (response.ok || response.status === 403) {
+                const jsonResponse = await response.text();
+                clearDisplay();
+                serverResponseField.innerHTML = `
+                <h4>--- transferring money ---</h4>
+                <pre>${jsonResponse}</pre>
+                `;
+            } else {
+                throw new Error("Request failed!");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+});
+
+
 deleteButton.addEventListener("click", async () => {
     const envName = deleteName.value;
     if (envName === "") {
@@ -135,7 +174,7 @@ deleteButton.addEventListener("click", async () => {
                     // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
                 }
             }); 
-            if (response.ok) {
+            if (response.ok || response.status === 403) {
                 const jsonResponse = await response.text();
                 clearDisplay();
                 serverResponseField.innerHTML = `

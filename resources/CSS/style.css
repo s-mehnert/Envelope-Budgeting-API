@@ -1,5 +1,5 @@
 * {
-    /* border: 1px solid black; */
+    /* border: 1px solid purple; */
     box-sizing: border-box;
 }
 
@@ -14,6 +14,11 @@ body {
 
 header {
     grid-area: header;
+    padding: 0 25px;
+}
+
+header p {
+    font-size: 14px;
 }
 
 .widget {
@@ -22,6 +27,8 @@ header {
 
 .envelopes {
     grid-area: envelopes;
+    text-align: center;
+    border-left: 1px solid black;
 }
 
 .response {
@@ -30,10 +37,14 @@ header {
 
 footer {
     grid-area: footer;
+    font-size: 10px;
+    margin-top: 10px;
+    text-align: right;
+    padding: 0 25px;
 }
 
 input {
-    width: 22%;
+    width: 15%;
 }
 
 button {
@@ -54,27 +65,18 @@ label {
     text-align: center;
     margin: 0;
     padding: 10px;
-    border: 2px dashed black;
+    border-top: 2px dashed black;
 }
 
 .container {
     display: grid;
     justify-items: space-around;
-    /* height: 200px;
-    width: 400px;
-    display: flex;
-    flex-wrap: wrap; */
-}
-
-.envelopes {
-    text-align: center;
+    margin: 20px;
 }
 
 .container div {
     justify-items: center;
     align-items: left;
-    /* width: 100%;
-    padding: 10px; */
 }
 
 #envelope-display {
