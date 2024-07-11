@@ -40,6 +40,15 @@ const displayEnv = jsonResponse => {
 
 const clearDisplay = () => {
     envelopeDisplayField.innerHTML = "";
+    serverResponseField.style.backgroundColor = "white";
+    serverResponseField.style.fontWeight = "normal";
+    serverResponseField.style.fontSize = "normal";
+};
+
+const alertServerResponseField = (color) => {
+    serverResponseField.style.backgroundColor = color;
+    serverResponseField.style.fontWeight = "bold";
+    serverResponseField.style.fontSize = "larger";
 };
 
 // add event listeners to connected HTTP routes
@@ -66,6 +75,7 @@ postButton.addEventListener("click", async () => {
     const envBudget = Number(postBudget.value);
     if (envName === "" || envBudget === 0) {
         serverResponseField.innerHTML = "Please enter a name and budget before clicking the CREATE button.";
+        alertServerResponseField("orange");
     } else {
         try {
             const response = await fetch("http://localhost:3000/envelopes", {
@@ -84,6 +94,11 @@ postButton.addEventListener("click", async () => {
                 <h4>--- creating envelope ---</h4>
                 <pre>${jsonResponse}</pre>
                 `;
+                if (response.status === 403) {
+                    alertServerResponseField("red");
+                } else {
+                    alertServerResponseField("green");
+                }
             } else {
                 throw new Error("Request failed!");
             }
@@ -98,6 +113,7 @@ putButton.addEventListener("click", async () => {
     const envSpent = Number(putAmount.value);
     if (envName === "" || envSpent === 0) {
         serverResponseField.innerHTML = "Please enter a name and amount spent before clicking the LOG SPENDING button.";
+        alertServerResponseField("orange");
     } else {
         const envURL = "http://localhost:3000/envelopes/" + envName + "?spent=" + envSpent;
         try {
@@ -116,6 +132,11 @@ putButton.addEventListener("click", async () => {
                 <h4>--- updating envelope ---</h4>
                 <pre>${jsonResponse}</pre>
                 `;
+                if (response.status === 403) {
+                    alertServerResponseField("red");
+                } else {
+                    alertServerResponseField("green");
+                }
             } else {
                 throw new Error("Request failed!");
             }
@@ -131,6 +152,7 @@ transferButton.addEventListener("click", async () => {
     const transfer = Number(transferAmount.value);
     if (fromEnv === "" || toEnv === "" || transfer === 0) {
         serverResponseField.innerHTML = "Please enter the names of the envelopes you want to transfer between and the amount bo be transferred before clicking the TRANSFER button.";
+        alertServerResponseField("orange");
     } else {
         const envURL = "http://localhost:3000/envelopes/transfer/" + fromEnv + "/" + toEnv + "?transfer=" + transfer;
         try {
@@ -149,6 +171,11 @@ transferButton.addEventListener("click", async () => {
                 <h4>--- transferring money ---</h4>
                 <pre>${jsonResponse}</pre>
                 `;
+                if (response.status === 403) {
+                    alertServerResponseField("red");
+                } else {
+                    alertServerResponseField("green");
+                }
             } else {
                 throw new Error("Request failed!");
             }
@@ -163,7 +190,9 @@ deleteButton.addEventListener("click", async () => {
     const envName = deleteName.value;
     if (envName === "") {
         serverResponseField.innerHTML = "Please enter a name before clicking the DELETE button.";
+        alertServerResponseField("orange");
     } else {
+        confirm(`Do you really want to delete the envelope "${envName}"?`);
         const envURL = "http://localhost:3000/envelopes/" + envName;
         try {
             const response = await fetch(envURL, {
@@ -181,6 +210,11 @@ deleteButton.addEventListener("click", async () => {
                 <h4>--- deleting envelope ---</h4>
                 <pre>${jsonResponse}</pre>
                 `;
+                if (response.status === 403) {
+                    alertServerResponseField("red");
+                } else {
+                    alertServerResponseField("green");
+                }
             } else {
                 throw new Error("Request failed!");
             }
