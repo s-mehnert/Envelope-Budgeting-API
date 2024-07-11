@@ -13,7 +13,27 @@ const deleteName = document.getElementById("del-env");
 const deleteButton = document.getElementById("delete-env");
 
 const serverResponseField = document.getElementById("response-display");
-const envelopeDisplay = document.getElementById("envelope-display");
+const envelopeDisplayField = document.getElementById("envelope-display");
+
+// helper functions for visually displaying envelopes
+
+const displayEnv = jsonResponse => {
+    clearDisplay();
+    for (const [name, envelope] of Object.entries(jsonResponse)) {
+        const envelopeDiv = document.createElement('div');
+        envelopeDiv.classList.add('envelope');
+        envelopeDiv.innerHTML = `
+            <div></div>
+            <h3>${name}</h3>
+            <p>Budget: $${envelope.budget}</p>
+        `; // add envelope image as well as styling in CSS
+        envelopeDisplayField.appendChild(envelopeDiv);
+    }
+};
+
+const clearDisplay = () => {
+    envelopeDisplayField.innerHTML = "";
+};
 
 // add event listeners to connected HTTP routes
 getAllButton.addEventListener("click", async () => {
@@ -21,16 +41,11 @@ getAllButton.addEventListener("click", async () => {
         const response = await fetch("http://localhost:3000/envelopes");
         if (response.ok) {
             const jsonResponse = await response.json();
-            serverResponseField.innerHTML = `<pre>${JSON.stringify(jsonResponse, null, 2)}</pre>`;
-            for (const [name, envelope] of Object.entries(jsonResponse)) {
-                const envelopeDiv = document.createElement('div');
-                envelopeDiv.classList.add('envelope');
-                envelopeDiv.innerHTML = `
-                    <h3>${name}</h3>
-                    <p>Budget: $${envelope.budget}</p>
-                `; // add envelope image as well as styling in CSS
-                envelopeDisplay.appendChild(envelopeDiv);
-            }
+            serverResponseField.innerHTML = `
+            <h4>--- listing all envelopes ---</h4>
+            <pre>${JSON.stringify(jsonResponse, null, 2)}</pre>
+            `;
+            displayEnv(jsonResponse);
         } else {
         throw new Error(`HTTP Error: ${response.status}`);
         }
@@ -57,7 +72,11 @@ postButton.addEventListener("click", async () => {
             });
             if (response.ok || response.status === 403) {
                 const jsonResponse = await response.text();
-                serverResponseField.innerHTML = jsonResponse;
+                clearDisplay();
+                serverResponseField.innerHTML = `
+                <h4>--- creating envelope ---</h4>
+                <pre>${jsonResponse}</pre>
+                `;
             } else {
                 throw new Error("Request failed!");
             }
@@ -85,7 +104,11 @@ putButton.addEventListener("click", async () => {
             });
             if (response.ok || response.status === 403) {
                 const jsonResponse = await response.text();
-                serverResponseField.innerHTML = jsonResponse;
+                clearDisplay();
+                serverResponseField.innerHTML = `
+                <h4>--- updating envelope ---</h4>
+                <pre>${jsonResponse}</pre>
+                `;
             } else {
                 throw new Error("Request failed!");
             }
@@ -112,7 +135,11 @@ deleteButton.addEventListener("click", async () => {
             }); 
             if (response.ok) {
                 const jsonResponse = await response.text();
-                serverResponseField.innerHTML = jsonResponse;
+                clearDisplay();
+                serverResponseField.innerHTML = `
+                <h4>--- deleting envelope ---</h4>
+                <pre>${jsonResponse}</pre>
+                `;
             } else {
                 throw new Error("Request failed!");
             }

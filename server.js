@@ -69,7 +69,7 @@ app.put("/envelopes/:name", (req, res, next) => {
     const spending = req.query.spent;
     if (envelopes[envelope].budget - spending >= 0) {
         envelopes[envelope].budget -= spending;
-        res.send(`Spending logged. Remaining budget in this envelope: ${envelopes[envelope].budget}`);
+        res.send(`Spending logged. Remaining budget in envelope "${envelope}": ${envelopes[envelope].budget}`);
     } else {
         res.status(403).send("Operation declined. Spending exceeds remaining budget.");
     }
