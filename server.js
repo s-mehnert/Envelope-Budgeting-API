@@ -3,15 +3,15 @@ const app = express();
 
 const cors = require("cors");
 const corsOptions = {
-    origin: "*", // set to real accessing URL once deployed
+    origin: "*", // TODO: set to real accessing URL once deployed
     method: "GET,PUT,POST,DELETE",
     allowedHeaders:"*"
 }
 
-const envelopes = {
+const envelopes = { // uncomment following lines to pre-populate a few envelopes for testing purposes (total budget will not be affected)
     // "groceries" : {"budget" : 1000, "spent": 0},
     // "rent & utilities" : {"budget" : 2000, "spent" : 0},
-    "clothing" : {"budget" : 200, "spent" : 0}
+    // "clothing" : {"budget" : 200, "spent" : 0}
 };
 let total = 5000;
 
@@ -23,23 +23,23 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res, next) => {
-    res.send("<h1>Hello, World!</h1>");
+app.get("/", (req, res) => {
+    res.send("<h1>Welcome to Envelope Budgeting!</h1>");
 });
 
-app.get("/total", (req, res, next) => {
+app.get("/total", (req, res) => {
     res.send(`Total budget remaining: ${total}`);
 });
 
-app.get("/envelopes", (req, res, next) => {
+app.get("/envelopes", (req, res) => {
     res.json(envelopes);
 });
 
-app.get("/envelopes/:name", (req, res, next) => {
+app.get("/envelopes/:name", (req, res) => {
     res.send(envelopes[req.params.name]);
 });
 
-app.post("/envelopes", (req, res, next) => {
+app.post("/envelopes", (req, res) => {
     const name = req.body.newEnv;
     const budget = req.body.newBudget;
     if (envelopeExists(name)) {
@@ -54,7 +54,7 @@ app.post("/envelopes", (req, res, next) => {
     }
 });
 
-app.post("/envelopes/transfer/:from/:to", (req, res, next) => {
+app.post("/envelopes/transfer/:from/:to", (req, res) => {
     const from = req.params.from;
     const to = req.params.to;
     const amount = Number(req.query.transfer);
@@ -69,7 +69,7 @@ app.post("/envelopes/transfer/:from/:to", (req, res, next) => {
     }  
 });
 
-app.put("/envelopes/:name", (req, res, next) => {
+app.put("/envelopes/:name", (req, res) => {
     const envelope = req.params.name;
     const spending = Number(req.query.spent);
     if (!envelopeExists(envelope)) {
@@ -83,7 +83,7 @@ app.put("/envelopes/:name", (req, res, next) => {
     }
 });
 
-app.delete("/envelopes/:name", (req, res, next) => {
+app.delete("/envelopes/:name", (req, res) => {
     const toBeDeleted = req.params.name;
     if (!envelopeExists(toBeDeleted)) {
         res.status(403).send(`Operation declined. \nThere is no envelope "${toBeDeleted}". \nPlease enter a valid name.`);

@@ -23,7 +23,6 @@ const envelopeDisplayField = document.getElementById("envelope-display");
 const checkTotalButton = document.getElementById("check-total");
 
 // helper functions for visually displaying envelopes
-
 const displayEnv = jsonResponse => {
     clearDisplay();
     for (const [name, envelope] of Object.entries(jsonResponse)) {
@@ -84,9 +83,7 @@ postButton.addEventListener("click", async () => {
             const response = await fetch("http://localhost:3000/envelopes", {
                 method: "post",
                 headers: {
-                    "Content-Type": "application/json",
-                    // Include any additional headers if needed
-                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({newEnv: envName, newBudget: envBudget}) 
             });
@@ -123,9 +120,7 @@ putButton.addEventListener("click", async () => {
             const response = await fetch(envURL, {
                 method: "put",
                 headers: {
-                    "Content-Type": "application/json",
-                    // Include any additional headers if needed
-                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                    "Content-Type": "application/json"
                 }
             });
             if (response.ok || response.status === 403) {
@@ -162,9 +157,7 @@ transferButton.addEventListener("click", async () => {
             const response = await fetch(envURL, {
                 method: "post",
                 headers: {
-                    "Content-Type": "application/json",
-                    // Include any additional headers if needed
-                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                    "Content-Type": "application/json"
                 }
             });
             if (response.ok || response.status === 403) {
@@ -201,9 +194,7 @@ deleteButton.addEventListener("click", async () => {
             const response = await fetch(envURL, {
                 method: "delete",
                 headers: {
-                    "Content-Type": "application/json",
-                    // Include any additional headers if needed
-                    // "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+                    "Content-Type": "application/json"
                 }
             }); 
             if (response.ok || response.status === 403) {
