@@ -26,7 +26,8 @@ DELETE - deletes an envelope
 
 ## Usage
 
-To see the API in action visit: ... ENTER URL TO WEBPAGE ... 
+To see the API in action visit: [Envelope-Budgeting-API](https://envelope-budgeting-api.onrender.com)  
+(Note that the API runs on a free Render instance, times to load might therefore be a little slower.) 
 
 ## Installation
 
