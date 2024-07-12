@@ -1,13 +1,13 @@
 # [REST API](https://envelope-budgeting-api.onrender.com) for Envelope Budgeting
 
 Using [Envelope Budgeting](https://www.thebalancemoney.com/what-is-envelope-budgeting-1293682) principles, this API allows users to manage their personal budget.  
-At this point the project serves mainly to demonstrate the workings of an API and can be accessed via a simple front-end. The total budget available is hard coded to $5000 and settings won't be stored beyond the current session. 
+At this point the project serves mainly to demonstrate the workings of an API and can be accessed via a simple front-end. The total budget available is hard coded to $5000 and any changes to the envelopes are subject to anybody accessing the website and won't be stored in a database. 
 
 ## Technology used
 
 Back-End: Express.js  
 Front-End: HTML, CSS, JavaScript  
-Deployed via: GitHub Pages and Render  
+Deployed via: Render  
 
 ## Routes
 
@@ -39,7 +39,7 @@ npm start
 
 ## Planned for version 2:
 - User can set their own Total Budget (now fixed to $5000).
-- Add database to store envelopes.
+- Add database to store envelopes per user.
 
 ## Contributing
 
