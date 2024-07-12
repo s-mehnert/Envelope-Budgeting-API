@@ -1,3 +1,6 @@
+// set URL to be able to access API from localhost as well as rendered application
+const apiUrl = window.location.origin.includes('localhost') ? 'http://localhost:3000' : 'https://envelope-budgeting-api.onrender.com';
+
 // grab all relevant HTML elements
 const getAllButton = document.getElementById("get-all");
 
@@ -55,7 +58,7 @@ const alertServerResponseField = (color) => {
 // add event listeners to connected HTTP routes
 getAllButton.addEventListener("click", async () => {
     try {
-        const response = await fetch("http://localhost:3000/envelopes");
+        const response = await fetch(`${apiUrl}/envelopes`);
         if (response.ok) {
             const jsonResponse = await response.json();
             clearDisplay();
@@ -80,7 +83,7 @@ postButton.addEventListener("click", async () => {
         alertServerResponseField("orange");
     } else {
         try {
-            const response = await fetch("http://localhost:3000/envelopes", {
+            const response = await fetch(`${apiUrl}/envelopes`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json"
@@ -115,7 +118,7 @@ putButton.addEventListener("click", async () => {
         serverResponseField.innerHTML = "Please enter a name and amount spent before clicking the LOG SPENDING button.";
         alertServerResponseField("orange");
     } else {
-        const envURL = "http://localhost:3000/envelopes/" + envName + "?spent=" + envSpent;
+        const envURL = `${apiUrl}/envelopes/` + envName + "?spent=" + envSpent;
         try {
             const response = await fetch(envURL, {
                 method: "put",
@@ -152,7 +155,7 @@ transferButton.addEventListener("click", async () => {
         serverResponseField.innerHTML = "Please enter the names of the envelopes you want to transfer between and the amount bo be transferred before clicking the TRANSFER button.";
         alertServerResponseField("orange");
     } else {
-        const envURL = "http://localhost:3000/envelopes/transfer/" + fromEnv + "/" + toEnv + "?transfer=" + transfer;
+        const envURL = `${apiUrl}/envelopes/transfer/` + fromEnv + "/" + toEnv + "?transfer=" + transfer;
         try {
             const response = await fetch(envURL, {
                 method: "post",
@@ -189,7 +192,7 @@ deleteButton.addEventListener("click", async () => {
         alertServerResponseField("orange");
     } else {
         confirm(`Do you really want to delete the envelope "${envName}"?`);
-        const envURL = "http://localhost:3000/envelopes/" + envName;
+        const envURL = `${apiUrl}/envelopes/` + envName;
         try {
             const response = await fetch(envURL, {
                 method: "delete",
@@ -220,7 +223,7 @@ deleteButton.addEventListener("click", async () => {
 
 checkTotalButton.addEventListener("click", async () => {
     try {
-        const response = await fetch("http://localhost:3000/total");
+        const response = await fetch(`${apiUrl}/total`);
         if (response.ok) {
             const jsonResponse = await response.text();
             clearDisplay();
