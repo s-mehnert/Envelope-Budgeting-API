@@ -1,0 +1,122 @@
+* {
+    /* border: 1px solid purple; */
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    width: 1000px;
+    height: 600px;
+    grid-template-areas: "header header" "widget envelopes" "response envelopes" "footer footer";
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 3fr 3fr 0.5fr;
+}
+
+h3 {
+    height: 50px;
+}
+
+header {
+    grid-area: header;
+    padding: 0 25px;
+}
+
+header p {
+    font-size: 14px;
+}
+
+.widget {
+    grid-area: widget;
+}
+
+.envelopes {
+    grid-area: envelopes;
+    justify-content: space-around;
+    border-left: 1px solid black;
+    text-align: center;
+}
+
+.envelopes h3 {
+    padding-left: 35px;
+}
+
+#envelope-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: space-evenly;
+}
+
+.envelope {
+    display: grid;
+    min-width: 25%;
+    max-height: 150px;
+    padding: 10px;
+    font-size: x-small;
+    margin: 10px;
+    justify-items: center;
+}
+
+.envelope h4 {
+    line-height: 0.1;
+    text-transform: uppercase;
+}
+
+.envelope div {
+    background-image: url("../images/envelope.png");
+    background-size: cover;
+    height: 50px;
+    width: 50px;
+}
+
+.response {
+    grid-area: response;
+}
+
+footer {
+    grid-area: footer;
+    font-size: 10px;
+    margin-top: 10px;
+    text-align: right;
+    padding: 0 25px;
+}
+
+input {
+    width: 15%;
+}
+
+button {
+    background-color: yellow;
+    margin-left: 15px;
+}
+
+label {
+    border-style: hidden;
+    font-weight: bold;
+    height: 100px;
+    padding: 5px;
+}
+
+#response-display {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    border-top: 2px dashed black;
+}
+
+.container {
+    display: grid;
+    justify-items: space-around;
+    margin: 0 20px 5px 20px;
+}
+
+.container div {
+    justify-items: center;
+    align-items: left;
+}
+
+.widget div {
+    padding: 10px 0;
+}
+

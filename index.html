@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/CSS/style.css">
+    <title>Envelope Budgeting</title>
+</head>
+<body>
+    <header>
+        <h1>Envelope Budgeting Widget</h1>
+        <p>Envelope budgeting is a method where you allocate specific amounts of cash to different spending categories, each represented by a physical or digital "envelope." Once the money in an envelope is spent, you cannot spend any more in that category until the next budgeting period. This system helps manage spending, encourages financial discipline, and ensures you do not exceed your budget.</p>
+        <hr>
+    </header>
+    <div class="container widget">
+        <div class="get">
+            <label for="get-all">Show All Envelopes</label>
+            <button id="get-all">SHOW ALL</button>
+        </div>
+        <div class="post">
+            <!-- <form id="post" action="http://localhost:3000/envelopes" method="POST"> -->
+                <label for="create-env">Create New Envelope</label>
+                <input type="text" name="new-env" id="new-env" placeholder="Name" required>
+                <input type="number" name="new-budget" id="new-budget" placeholder="Budget" min="10" step="10" required>
+                <button type="submit" id="create-env">CREATE</button>
+            <!-- </form> -->
+        </div>
+        <div class="put">
+            <label for="update-env">Update Envelope</label>
+            <input type="text" name="put-env" id="put-env" placeholder="Name" required>
+            <input type="number" name="spent" id="spent" placeholder="Amount" required>
+            <button type ="submit" id="update-env">LOG SPENDING</button>
+        </div>
+        <div class="transfer">
+            <label for="transfer-budget">Transfer Budget</label>
+            <input type="text" name="from-env" id="from-env" placeholder="From" required>
+            <input type="text" name="to-env" id="to-env" placeholder="To" required>
+            <input type="number" name="transfer-amount" id="transfer-amount" placeholder="Amount" required>
+            <button type ="submit" id="transfer-budget">TRANSFER</button>
+        </div>
+        <div class="delete">
+            <label for="delete-env">Delete Envelope</label>
+            <input type="text" name="del-env" id="del-env" placeholder="Name" required> <!-- add code in script.js to display a dropdown of all current envelopes-->
+            <button id="delete-env">DELETE</button>
+        </div>
+        <div class="total">
+            <label for="check-total">Check Total Remaining Budget</label>
+            <button id="check-total">TOTAL</button>
+        </div>
+    </div>
+    <div class="envelopes">
+        <h3>Your Budgeting Envelopes</h3>
+        <div id="envelope-display"></div>
+    </div>
+    <div class="container response">
+        <p id="response-display">...server response will be displayed here ...</p>
+    </div>
+    <footer>
+        <a href="https://www.flaticon.com/free-icons/envelope" title="envelope icons">Envelope icons created by Freepik - Flaticon</a>
+    </footer>
+</body>
+<script src="resources/script.js"></script>
+</html>

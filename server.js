@@ -1,73 +1,97 @@
 const express = require("express");
 const app = express();
 
-const envelopes = {
-    // "groceries" : {"budget" : 1000},
-    // "rent & utilities" : {"budget" : 2000},
-    // "clothing" : {"budget" : 200}
-};
+const cors = require("cors");
+const corsOptions = {
+    origin: "*", // TODO: set to real accessing URL once deployed
+    method: "GET,PUT,POST,DELETE",
+    allowedHeaders:"*"
+}
 
+const envelopes = { // uncomment following lines to pre-populate a few envelopes for testing purposes (total budget will not be affected)
+    // "groceries" : {"budget" : 1000, "spent": 0},
+    // "rent & utilities" : {"budget" : 2000, "spent" : 0},
+    // "clothing" : {"budget" : 200, "spent" : 0}
+};
 let total = 5000;
 
+const envelopeExists = name => {
+    return envelopes.hasOwnProperty(name);
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
+    res.send("<h1>Welcome to Envelope Budgeting!</h1>");
+});
+
+app.get("/total", (req, res) => {
     res.send(`Total budget remaining: ${total}`);
 });
 
-app.get("/envelopes", (req, res, next) => {
+app.get("/envelopes", (req, res) => {
     res.json(envelopes);
 });
 
-app.get("/envelopes/:name", (req, res, next) => {
+app.get("/envelopes/:name", (req, res) => {
     res.send(envelopes[req.params.name]);
 });
 
-app.post("/envelopes", (req, res, next) => {
-    const name = req.body.name;
-    const budget = req.body.budget;
-    if (total >= budget) {
+app.post("/envelopes", (req, res) => {
+    const name = req.body.newEnv;
+    const budget = req.body.newBudget;
+    if (envelopeExists(name)) {
+        res.status(403).send(`Operation declined. \nEnvelope (${budget}) already exists. \nPlease, select another name.`);
+    } else if (total >= budget) {
         total -= budget;
-        const envelope = {"budget" : budget};
+        const envelope = {"budget" : budget, "spent" : 0};
         envelopes[name] = envelope;
-        res.status(201).send(`New envelope created. Total budget remaining: ${total}`);
+        res.status(201).send(`New envelope "${name}" ${JSON.stringify(envelopes[name])} created. \nTotal budget remaining: ${total}`);
     } else {
-        res.status(403).send(`Operation declined. Set budget (${budget}) exceeds total remaining budget (${total}).`);
+        res.status(403).send(`Operation declined. \nSet budget (${budget}) exceeds total remaining budget (${total}).`);
     }
 });
 
-app.post("/envelopes/transfer/:from/:to", (req, res, next) => {
+app.post("/envelopes/transfer/:from/:to", (req, res) => {
     const from = req.params.from;
     const to = req.params.to;
-    const amount = req.body.amount;
-    if (envelopes[from].budget >= amount) {
+    const amount = Number(req.query.transfer);
+    if (!envelopeExists(from) || !envelopeExists(to)) {
+        res.status(403).send(`Operation declined. \nPlease make sure to enter names of existing envelopes to transfer money between them.`);
+    } else if (envelopes[from].budget >= amount) {
         envelopes[from].budget -= amount;
         envelopes[to].budget += amount;
-        res.status(201).send(`New balance: ${envelopes[from].budget}, ${envelopes[to].budget}`);
+        res.status(201).send(`New balance: \nEnvelope "${from}" - $${envelopes[from].budget}, \nEnvelope "${to}" - $${envelopes[to].budget}`);
     } else {
-        res.status(403).send(`Operation declined. Not enough money left in ${envelopes[from]}.`);
+        res.status(403).send(`Operation declined. \nNot enough money left in envelope "${from}".`);
     }  
 });
 
-app.put("/envelopes/:name", (req, res, next) => {
+app.put("/envelopes/:name", (req, res) => {
     const envelope = req.params.name;
-    const spending = req.query.spent;
-    if (envelopes[envelope].budget - spending >= 0) {
+    const spending = Number(req.query.spent);
+    if (!envelopeExists(envelope)) {
+        res.status(403).send(`Operation declined. \nThere is no envelope "${envelope}". \nPlease enter a valid name.`);
+    } else if (envelopes[envelope].budget - spending >= 0) {
         envelopes[envelope].budget -= spending;
-        res.send(`Spending logged. Remaining budget in this envelope: ${envelopes[envelope].budget}`);
+        envelopes[envelope].spent += spending;
+        res.send(`Spending logged. \nRemaining budget in envelope "${envelope}": $${envelopes[envelope].budget}`);
     } else {
-        res.status(403).send("Operation declined. Spending exceeds remaining budget.");
+        res.status(403).send("Operation declined. \nSpending exceeds remaining budget.");
     }
 });
 
-app.delete("/envelopes/:name", (req, res, next) => {
+app.delete("/envelopes/:name", (req, res) => {
     const toBeDeleted = req.params.name;
-    if (envelopes[toBeDeleted]) {
+    if (!envelopeExists(toBeDeleted)) {
+        res.status(403).send(`Operation declined. \nThere is no envelope "${toBeDeleted}". \nPlease enter a valid name.`);
+    } else {
         const remainingBudget = envelopes[toBeDeleted].budget;
         delete envelopes[toBeDeleted];
         total += remainingBudget;
-        res.send(`Envelope "${toBeDeleted}" deleted. ${remainingBudget} restored. New total budget: ${total}`)
+        res.send(`Envelope "${toBeDeleted}" deleted, E${remainingBudget} restored. \nNew total budget: $${total}`)
     }
 });
 
